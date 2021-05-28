@@ -1,0 +1,57 @@
+<html>
+<head>
+    <title>test</title>
+</head>
+
+<body>
+    <form id="formElem">
+        <input type="text" name="title" value="Karam">
+        <input type="text" name="description" value="Yousef">
+        <input type="text" name="content" value="Yousef">
+        <input type="submit">
+    </form>
+    <div id="decoded"></div>
+    <button id="encode">Encode</button>
+    <div id="encoded"></div>
+</body>
+<script>
+    encode.onclick = async (e) => {
+        let response = await fetch('http://localhost:8080/api/posts', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+        })
+
+        let text = await response.text(); // read response body as text
+        data = JSON.parse(text);
+        document.querySelector("#encoded").innerHTML = text;
+      //  document.querySelector("#encoded").innerHTML = `First name = ${data.firstname} <br/> 
+      //                                                  Last name = ${data.lastname} <br/>
+      //                                                  Age    = ${data.age}`
+    };
+
+    formElem.onsubmit = async (e) => {
+      e.preventDefault();
+      var form = document.querySelector("#formElem");
+     // var form = document.forms[0];
+
+        data = {
+          title : form.querySelector('input[name="title"]').value,
+          description : form.querySelector('input[name="description"]').value,
+          content : form.querySelector('input[name="content"]').value
+        }
+
+        let response = await fetch('http://localhost:8080/api/posts', {
+                method: 'POST', // or 'PUT'
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+        })
+
+        let text = await response.text(); // read response body as text
+        document.querySelector("#decoded").innerHTML = text;
+    };
+</script>
+</html>
